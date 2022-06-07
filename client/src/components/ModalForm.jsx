@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, Modal, Typography, Box } from "@material-ui/core";
+import { Button, Modal, Typography, Box, TextField } from "@material-ui/core";
 
 import "./ModalForm.css";
 
@@ -28,6 +28,9 @@ const ModalForm = () => {
   const handleSubmit = () => {
     if (title === "" || author === "" || pages === "") {
       alert("Please enter something in every input field");
+      setTitle("");
+      setAuthor("");
+      setPages("");
       return;
     }
     bookList.push({
@@ -38,20 +41,77 @@ const ModalForm = () => {
     console.log(bookList);
     setTitle("");
     setAuthor("");
+    setPages("");
   };
 
   return (
     <div>
-      <Button
-        onClick={handleOpen}
+      <div
         style={{
-          backgroundColor: "rgb(58, 58, 153)",
-          color: "white",
-          marginTop: "10vh",
+          display: "flex",
+          flexDirection: "row",
+          width: "100vw",
+          justifyContent: "center",
         }}
       >
-        Add a New Book
-      </Button>
+        <div></div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "350px",
+            justifyContent: "center",
+            marginTop: "50px",
+          }}
+        >
+          <label for="fname" className="label">
+            Title:
+          </label>
+          <input
+            type="text"
+            className="input"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="title of the book"
+            required
+          />
+          <label for="fname" className="label">
+            Author:
+          </label>
+          <input
+            type="text"
+            className="input"
+            value={author}
+            onChange={(event) => setAuthor(event.target.value)}
+            placeholder="author of the book"
+            required
+          />
+          <label for="fname" className="label">
+            Pages:
+          </label>
+          <input
+            type="number"
+            className="input"
+            value={pages}
+            onChange={(event) => setPages(event.target.value)}
+            placeholder="number of pages in book"
+            required
+          />
+          <Button
+            onClick={handleSubmit}
+            className="add-book"
+            style={{
+              backgroundColor: "rgb(58, 58, 153)",
+              color: "white",
+              marginTop: "5vh",
+            }}
+          >
+            Add New Book
+          </Button>
+        </div>
+
+        <div></div>
+      </div>
 
       <div
         style={{
@@ -87,8 +147,7 @@ const ModalForm = () => {
             <button
               className="remove-all"
               onClick={() => {
-                alert("Are you sure you want to remove all books?");
-                setBookList([]);
+                handleOpen();
               }}
             >
               Remove All
@@ -99,40 +158,15 @@ const ModalForm = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <div></div>
-        <div
-          style={{
-            width: "85%",
-            backgroundColor: "rgb(58, 58, 153)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            marginTop: "25px",
-            paddingTop: "15px",
-            paddingBottom: "15px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
+      <div className="flex-row-center">
+        <div className="main-header">
+          <div className="flex-row-around">
             <p className="main-text">Title</p>
             <p className="main-text">Author</p>
             <p className="main-text">Pages</p>
             <p className="main-text"></p>
+            <p className="main-text"></p>
           </div>
-
-          <div></div>
         </div>
       </div>
 
@@ -184,6 +218,7 @@ const ModalForm = () => {
                       setStatus(true);
                     }}
                   /> */}
+                  <BiEdit className="edit" onClick={() => {}} />
                   <BsFillTrashFill
                     variant="contained"
                     onClick={() => {
@@ -214,45 +249,29 @@ const ModalForm = () => {
         }}
       >
         <Box className="modal">
-          <form className="form">
-            <label for="fname">Title:</label>
-            <input
-              type="text"
-              className="input"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              placeholder="title of the book"
-              required
-            />
-            <label for="fname">Author:</label>
-            <input
-              type="text"
-              className="input"
-              value={author}
-              onChange={(event) => setAuthor(event.target.value)}
-              placeholder="author of the book"
-              required
-            />
-            <label for="fname">Pages:</label>
-            <input
-              type="number"
-              className="input"
-              value={pages}
-              onChange={(event) => setPages(event.target.value)}
-              placeholder="number of pages in book"
-              required
-            />
+          <h3>Are you sure you want to remove every book from your library?</h3>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: "50px",
+            }}
+          >
+            <button onClick={handleClose}>Cancel</button>
             <button
+              className="remove-all"
               onClick={() => {
+                if (bookList.length === 0) {
+                  handleClose();
+                }
+                setBookList([]);
                 handleClose();
-                handleSubmit();
               }}
-              className="submit"
-              type="submit"
             >
-              Submit
+              Delete
             </button>
-          </form>
+          </div>
         </Box>
       </Modal>
     </div>
